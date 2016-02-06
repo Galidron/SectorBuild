@@ -2,6 +2,7 @@
 
 import hex
 
+
 class SubSector:
     def __init__(self, sub_sec_num="0"):
         star_count = 0
@@ -24,13 +25,16 @@ class SubSector:
     def __str__(self):
         string = ""
         for space, world in sorted(self.subsector.items()):
-            string += space
-            string += " "
-            string += world.name
-            string += " "
-            string += str(world)
-            string += "\n"
+            string += "{0} {1} {2}\n".format(space, world.name, world)
+
         return string
+
+    def write_worlds(self,file_name="world_file.txt"):
+        with open(file_name, "w") as file:
+            for space, world in sorted(self.subsector.items()):
+                if not world.is_empty:
+                    file.write("{1:10} {0} {2}\n".format(space, world.name, world))
 
 x = SubSector()
 print(x)
+x.write_worlds()

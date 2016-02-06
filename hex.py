@@ -368,80 +368,16 @@ class Hex:
         assert (self.gov_num in range(16)), "Government not set"
         assert (self.law in range(10)), "Law not set"
 
-        code_str = self.starport_class
-        if self.size < 10:
-            code_str += str(self.size)
-        elif self.size == 10:
-            code_str += "A"
-        else:
-            code_str += "Z"
-
-        if self.atmos_num < 10:
-            code_str += str(self.atmos_num)
-        elif self.atmos_num == 10:
-            code_str += "A"
-        elif self.atmos_num == 11:
-            code_str += "B"
-        elif self.atmos_num == 12:
-            code_str += "C"
-        elif self.atmos_num == 13:
-            code_str += "D"
-        elif self.atmos_num == 14:
-            code_str += "E"
-        elif self.atmos_num == 15:
-            code_str += "F"
-        else:
-            code_str += "Z"
-
-        if self.hydro < 10:
-            code_str += str(self.hydro)
-        elif self.hydro == 10:
-            code_str += "A"
-        else:
-            code_str += "Z"
-
-        if self.pop < 10:
-            code_str += str(self.pop)
-        elif self.pop == 10:
-            code_str += "A"
-        elif self.pop == 11:
-            code_str += "B"
-        elif self.pop == 12:
-            code_str += "C"
-        else:
-            code_str += "Z"
-
-        if self.gov_num < 10:
-            code_str += str(self.gov_num)
-        elif self.gov_num == 10:
-            code_str += "A"
-        elif self.gov_num == 11:
-            code_str += "B"
-        elif self.gov_num == 12:
-            code_str += "C"
-        elif self.gov_num == 13:
-            code_str += "D"
-        elif self.gov_num == 14:
-            code_str += "E"
-        elif self.gov_num == 15:
-            code_str += "F"
-        else:
-            code_str += "Z"
-
-        code_str += str(self.law)
-        code_str += "-"
-        code_str += str(self.tech)
+        code_str = "{0}{1:X}{2:X}{3:X}{4:X}{5:X}-{6:<2}".format(self.starport_class, self.size, self.hydro, self.pop,
+                                                             self.gov_num, self.law, self.tech)
 
         for base in self.bases:
-            code_str += " "
-            code_str += base
+            code_str += " {0}".format(base)
 
         for trade in self.trade_codes:
-            code_str += " "
-            code_str += trade
+            code_str += " {0}".format(trade)
 
         if self.travel_code:
-            code_str += "    "
-            code_str += self.travel_code
+            code_str = "{0:35}{1}".format(code_str, self.travel_code)
 
         return code_str
