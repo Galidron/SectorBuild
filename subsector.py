@@ -29,7 +29,7 @@ class SubSector:
 
         return string
 
-    def write_worlds(self,file_name="world_file.txt"):
+    def write_worlds(self,file_name="system_file.txt"):
         with open(file_name, "w") as file:
             for space, world in sorted(self.subsector.items()):
                 if not world.is_empty:
