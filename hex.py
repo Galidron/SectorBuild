@@ -259,6 +259,9 @@ class Hex:
         elif self.gov_num in [13, 14]:
             self.tech -= 2
 
+        if self.tech < 0:
+            self.tech = 0
+
     def gen_bases(self):
         """Calculate the primary world's bases"""
         assert (self.starport_class in ["X", "A", "B", "C", "D", "E"]), "Starport class not set"
@@ -309,7 +312,7 @@ class Hex:
         assert (self.pop in range(16)), "Population not set"
         assert (self.gov_num in range(16)), "Government not set"
         assert (self.law in range(10)), "Law not set"
-        assert (self.tech in range(21)), "Tech not set " + str(self.tech)
+        assert (self.tech in range(26)), "Tech not set " + str(self.tech)
         if self.atmos_num in range(4, 10) and self.hydro in range(4, 9) and self.pop in range(5, 8):
             self.trade_codes.append("Ag")
         if self.size == 0 and self.atmos_num == 0 and self.hydro == 0:
@@ -352,8 +355,11 @@ class Hex:
         if d6() + d6() <= 10:
             self.gas_giant = True
 
-    def code(self):
-        assert (self.starport_class in ["X", "A", "B", "C", "D", "E"]), "Starport class not set"
+    def __str__(self):
+        if self.is_empty:
+            return ""
+
+        assert (self.starport_class in ["X", "A", "B", "C", "D", "E"]), "Starport class not set " + self.starport_class
         assert (self.size in range(11)), "Size not set"
         assert (self.tech in range(21)), "Tech not set " + str(self.tech)
         assert (self.atmos_num in range(16)), "Atmosphere not set"
