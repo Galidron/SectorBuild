@@ -7,6 +7,11 @@ def d6():
     random.seed()
     return random.randint(1, 6)
 
+def two_d6():
+    """Simulate the roll of two 6 sided die"""
+    random.seed()
+    return random.randint(1, 6) + random.randint(1, 6)
+
 
 def d3():
     """Simulate the roll of a 3 sided die"""
@@ -80,7 +85,8 @@ class Hex:
 
     def gen_size(self):
         """Calculate the primary world's size"""
-        self.size = d6() + d6() - 2
+        self.size = two_d6() - 2
+        assert (self.size in range(11)), "Size set improperly"
         self.set_grav()
 
     def set_grav(self):
@@ -96,7 +102,7 @@ class Hex:
     def gen_atmos(self):
         """Calculate the primary world's atmosphere based on size"""
         assert (self.size in range(11)), "Size not set"
-        self.atmos_num = d6() + d6() - 7 + self.size
+        self.atmos_num = two_d6() - 7 + self.size
         if self.atmos_num < 0:
             self.atmos_num = 0
         self.set_atmos_type()
@@ -108,7 +114,7 @@ class Hex:
 
     def gen_temp(self):
         """Calculate the primary world's temperature"""
-        self.temp_num = d6() + d6()
+        self.temp_num = two_d6()
         self.set_temp_name()
 
     def set_temp_name(self):
@@ -124,27 +130,27 @@ class Hex:
         if self.size > 2:
             self.hydro = 0
         elif self.atmos_num in [0, 1, 10, 11, 12]:
-            self.hydro = d6() + d6() - 4
+            self.hydro = two_d6() - 4
         elif self.atmos_num not in [13, 15]:
             if self.temperature == "Hot":
-                self.hydro = d6() + d6() - 9
+                self.hydro = two_d6() - 9
             elif self.temperature == "Boiling":
-                self.hydro = d6() + d6() - 13
+                self.hydro = two_d6() - 13
             else:
-                self.hydro = d6() + d6() - 7
+                self.hydro = two_d6() - 7
         else:
-            self.hydro = d6() + d6() - 7
+            self.hydro = two_d6() - 7
         if self.hydro < 0:
             self.hydro = 0
 
     def gen_pop(self):
         """Calculate the primary world's population"""
-        self.pop = d6() + d6() - 2
+        self.pop = two_d6() - 2
 
     def gen_gov(self):
         """Calculate the primary world's government type based on population"""
         assert (self.pop in range(16)), "Population not set"
-        self.gov_num = d6() + d6() - 7 + self.pop
+        self.gov_num = two_d6() - 7 + self.pop
         if self.gov_num < 0:
             self.gov_num = 0
         self.set_gov_name()
@@ -164,10 +170,10 @@ class Hex:
             fac_count -= 1
         if fac_count > 0:
             for i in range(1, fac_count + 1):
-                gov = d6() + d6() - 7 + self.pop
+                gov = two_d6() - 7 + self.pop
                 if gov < 0:
                     gov = 0
-                strength = d6() + d6()
+                strength = two_d6()
                 self.factions.append([gov, strength, governments[str(gov)], fac_strength[str(strength)]])
 
     def gen_culture(self):
@@ -183,7 +189,7 @@ class Hex:
     def gen_law(self):
         """Calculate the primary world's law level based on government"""
         assert (self.gov_num in range(16)), "Government not set"
-        self.law = d6() + d6() - 7 + self.gov_num
+        self.law = two_d6() - 7 + self.gov_num
         if self.law < 0:
             self.law = 0
         if self.law > 9:
@@ -192,7 +198,7 @@ class Hex:
     def gen_starport(self):
         """Calculate the primary world's starport based on population"""
         assert (self.pop in range(16)), "Population not set"
-        starport_num = d6() + d6()
+        starport_num = two_d6()
         if self.pop >= 10:
             starport_num += 2
         elif self.pop >= 8:
@@ -266,30 +272,30 @@ class Hex:
         """Calculate the primary world's bases"""
         assert (self.starport_class in ["X", "A", "B", "C", "D", "E"]), "Starport class not set"
         if self.starport_class == "A":
-            if d6() > 8:
+            if two_d6() > 8:
                 self.bases.append("N")
-            if d6() > 10:
+            if two_d6() > 10:
                 self.bases.append("S")
-            if d6() > 8:
+            if two_d6() > 8:
                 self.bases.append("R")
             self.bases.append("T")
         elif self.starport_class == "B":
-            if d6() > 8:
+            if two_d6() > 8:
                 self.bases.append("N")
-            if d6() > 8:
+            if two_d6() > 8:
                 self.bases.append("S")
-            if d6() > 10:
+            if two_d6() > 10:
                 self.bases.append("R")
             self.bases.append("T")
         elif self.starport_class == "C":
-            if d6() > 8:
+            if two_d6() > 8:
                 self.bases.append("S")
-            if d6() > 10:
+            if two_d6() > 10:
                 self.bases.append("R")
-            if d6() > 10:
+            if two_d6() > 10:
                 self.bases.append("T")
         elif self.starport_class == "D":
-            if d6() > 7:
+            if two_d6() > 7:
                 self.bases.append("S")
 
     def set_travel_code(self):
@@ -352,7 +358,7 @@ class Hex:
 
     def gen_gas_giant(self):
         """Calculate the presence of a gas giant in the system"""
-        if d6() + d6() <= 10:
+        if two_d6() <= 10:
             self.gas_giant = True
 
     def __str__(self):
@@ -375,9 +381,9 @@ class Hex:
             code_str += " {0}".format(base)
 
         for trade in self.trade_codes:
-            code_str += " {0}".format(trade)
+            code_str += "  {0}".format(trade)
 
         if self.travel_code:
-            code_str = "{0:35}{1}".format(code_str, self.travel_code)
+            code_str = "{0:30} {1}".format(code_str, self.travel_code)
 
         return code_str

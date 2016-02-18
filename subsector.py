@@ -1,11 +1,16 @@
 #!/Library/Frameworks/Python.framework/Versions/3.5/bin/python3
 
 import hex
+import random
+import json
+
+with open('starnames.json', "r") as f:
+    star_names = json.load(f)
+
 
 
 class SubSector:
     def __init__(self, sub_sec_num="0"):
-        star_count = 0
         self.subsector = {}
         for column in range(1, 9):
             for row in range(1, 11):
@@ -17,8 +22,10 @@ class SubSector:
                     space_num += str(row)
 
                 if hex.d6() > 3:
-                    self.subsector[space_num] = hex.Hex(False, "Star " + str(star_count))
-                    star_count += 1
+                    if len(star_names) > 0:
+                        name = random.choice(star_names)
+                        star_names.remove(name)
+                    self.subsector[space_num] = hex.Hex(False, name)
                 else:
                     self.subsector[space_num] = hex.Hex()
 
@@ -33,7 +40,7 @@ class SubSector:
         with open(file_name, "w") as file:
             for space, world in sorted(self.subsector.items()):
                 if not world.is_empty:
-                    file.write("{1:10} {0} {2}\n".format(space, world.name, world))
+                    file.write("{1:20} {0} {2}\n".format(space, world.name, world))
 
 x = SubSector()
 print(x)
