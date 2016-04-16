@@ -36,7 +36,7 @@ class SubSector:
 
         return string
 
-    def write_systems(self, file_name="system_file.txt"):
+    def write_systems(self, file_name="player_subsector_index.txt"):
         with open(file_name, "w") as file:
             for space, world in sorted(self.subsector.items()):
                 if not world.is_empty:

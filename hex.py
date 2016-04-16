@@ -1,21 +1,19 @@
 import random
 import json
 
+random.seed()
 
 def d6():
     """Simulate the roll of a 6 sided die"""
-    random.seed()
     return random.randint(1, 6)
 
 def two_d6():
     """Simulate the roll of two 6 sided die"""
-    random.seed()
     return random.randint(1, 6) + random.randint(1, 6)
 
 
 def d3():
     """Simulate the roll of a 3 sided die"""
-    random.seed()
     return random.randint(1, 3)
 
 with open('atmospheres.json', 'r') as f:
@@ -303,11 +301,11 @@ class Hex:
         assert (self.atmos_num in range(16)), "Atmosphere not set"
         assert (self.gov_num in range(16)), "Government not set"
         assert (self.law in range(10)), "Law not set"
-        if self.atmos_num > 10:
+        if self.atmos_num >= 10:
             self.travel_code = "A"
-        elif self.gov_num in [0, 7, 10]:
+        elif self.gov_num in {0, 7, 10}:
             self.travel_code = "A"
-        elif self.law in [0, 9]:
+        elif self.law in {0, 9}:
             self.travel_code = "A"
 
     def set_trade_codes(self):
@@ -374,8 +372,8 @@ class Hex:
         assert (self.gov_num in range(16)), "Government not set"
         assert (self.law in range(10)), "Law not set"
 
-        code_str = "{0}{1:X}{2:X}{3:X}{4:X}{5:X}-{6:<2}".format(self.starport_class, self.size, self.hydro, self.pop,
-                                                             self.gov_num, self.law, self.tech)
+        code_str = "{0}{1:X}{2:X}{3:X}{4:X}{5:X}{6:X}-{7:<2}".format(self.starport_class, self.size, self.atmos_num,
+                                                                self.hydro, self.pop, self.gov_num, self.law, self.tech)
 
         for base in self.bases:
             code_str += " {0}".format(base)
